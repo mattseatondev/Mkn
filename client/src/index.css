@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, sans-serif;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+:root {
+    --bg: #533B4D;
+    --prim: #74A4BC;
+    --sec: #F7A278;
+    --highlight: #33CA7F;
+    --dark: #55505C;
+    --all: #E6E6FA;
+    --work: #A8D0DB;
+    --personal: #F2C6AC;
+    --exercise: #B9EBC0;
+    --cooking: #FFD6A5;
+    --study: #C5B0E6;
+    --lifestyle: #FFE4E1;
+    --housework: #E6E6FA;
+    --del: #dc6264;
+}

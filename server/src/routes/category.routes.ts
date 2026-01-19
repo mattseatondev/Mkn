@@ -22,7 +22,7 @@ router.post('/', (req: Request<{}, {}, PartialCategory>, res: Response, next: Ne
 
 /**
  * GET /category
- * @returns array containing categories
+ * @returns array containing all categories in DataStore
  */
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
     try {

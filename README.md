@@ -47,3 +47,42 @@ application should have a backend API built with Node.js and Express.js, and a f
 - Error handling and input validation.
 - Bonus points for additional features or optimizations.
 
+---
+## Makeen – Tech Assessment: Todo App
+
+This is a full-stack Todo application built as a technical assessment.
+Backend: Node.js, Express, TypeScript
+Frontend: React, Redux Toolkit, TypeScript (initialized with Vite)
+Uses an in-memory data store
+
+### Requirements
+Node.js (v18+ recommended)
+npm
+
+**Running the Backend**:
+cd server
+npm install
+npm run dev
+
+
+The Express API will start on:
+
+http://localhost:3001
+
+**Running the Frontend**
+cd client
+npm install
+npm run dev
+
+
+The React app will start on:
+
+http://localhost:5173
+
+### Notes
+
+The frontend communicates directly with the backend via REST APIs.
+Application state is managed using Redux Toolkit.
+Todos can be created, edited, deleted, completed, filtered, sorted, and grouped by category.
+Categories can be created and assigned to todos.
+All data is stored in memory for simplicity.

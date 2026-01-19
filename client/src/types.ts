@@ -1,7 +1,7 @@
 // Assigning type options to const array facilitates runtime validation
 export const CAT_TYPES = [ 
     'work',
-    'personal',
+    'family',
     'exercise',
     'housework',
     'cooking',
@@ -17,4 +17,14 @@ export interface Category {
     name: string;
     createdAt: Date;
     details?: string;
+}
+
+export interface Todo {
+    id: number;
+    category: CategoryType;
+    isComplete: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    title: string;
+    body?: string;
 }

@@ -5,6 +5,7 @@ import categoryRoutes from "./routes/category.routes";
 import todoRoutes from "./routes/todo.routes";
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/notFound.middleware";
+import { seedInitCategories } from "./seed/category.seed";
 
 const app = express();
 
@@ -23,5 +24,7 @@ app.use("/todo", todoRoutes);
 app.use(notFoundHandler);
 // Error handler
 app.use(errorHandler);
+
+seedInitCategories();
 
 export default app;

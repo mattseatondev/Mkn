@@ -2,7 +2,7 @@ import { CategoryType } from "./category.model"
 
 export interface Todo {
     id: number;
-    category: CategoryType;
+    category: string;
     isComplete: boolean;
     createdAt: Date;
     updatedAt: Date;
