@@ -67,7 +67,7 @@ npm run dev
 
 The Express API will start on:
 
-http://localhost:3001
+http://localhost:8080
 
 **Running the Frontend**
 cd client
