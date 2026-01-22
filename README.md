@@ -67,17 +67,17 @@ The server is structured using a Layered Architecture pattern:
 The client is built with a Feature-Based structure:
 
 - State Management: Powered by Redux Toolkit. I utilized RTK Query for the API layer to handle caching, loading states, and automatic re-fetching (cache invalidation via tags).
-- Derived State: Instead of storing filtered lists in the state, I used Memoized Selectors to derive "Completed" vs "Pending" tasks on the fly, optimizing performance.
+- Derived State: Instead of storing filtered lists in the state, selectors have been implemented to partiton "Completed" vs. "Pending" Todos.
 - Component Pattern: A mix of "Container" components (logic-heavy) and "Presentational" components (UI-focused) to keep the codebase dry and testable.
 
 
 ### API Endpoints
 
-The server is equipped with several CRUD routes for selective to each entity (Todo;Category):
+The server is equipped with several CRUD routes for selective to each entity (Todo; Category):
 
 **Todo Routes**
-- POST /todo - Adds a formatted Todo to the DataStore
-- GET /todo - Retrieve all Todos
+- POST /todo - Adds a Todo to the DataStore
+- GET /todo - Retrieves all Todos
 - GET /todo/:id - Retrieves a single Todo
 - PUT /todo/:id - Updates a single Todo
 - DELETE /todo/:id - Removes a single Todo
@@ -92,6 +92,6 @@ The server is equipped with several CRUD routes for selective to each entity (To
 
 - The frontend communicates directly with the backend via REST APIs.
 - Application state is managed using Redux Toolkit.
-- Todos can be created, edited, deleted, completed, filtered, sorted, and grouped by category.
+- Todos can be created, edited, deleted, completed, filtered, sorted, are implicitly sorted by category when the Active Category is updated.
 - Categories can be created and assigned to todos.
 - All data is stored in-memory for simplicity.
