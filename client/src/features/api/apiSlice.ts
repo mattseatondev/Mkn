@@ -3,15 +3,19 @@ import type { Todo, Category } from '../../types';
 
 const baseUrl = 'http://localhost:8080';
 
+// Central slice to manage and sync server-based state
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl }),
+    // For invalidating cache
     tagTypes: ['Todos', 'Categories'],
     endpoints: builder => ({
+        // GET all Todos
         getTodos: builder.query<Todo[], void>({
             query: () => '/todo',
             providesTags: ['Todos']
         }),
+        // POST Todo
         addTodo: builder.mutation<Todo, Partial<Todo>>({
             query: newTodo => ({
                 url: '/todo',
@@ -20,7 +24,8 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Todos']
         }),
-        updateTodo: builder.mutation<Todo, Partial<Todo> & { id: number}>({
+        // PUT Todo
+        updateTodo: builder.mutation<Todo, Partial<Todo> & { id: number }>({
             query: ({ id, ...patch }) => ({
                 url: `/todo/${id}`,
                 method: 'PUT',
@@ -28,17 +33,29 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Todos']
         }),
-        deleteTodo: builder.mutation<{success: boolean, id: string}, string>({
+        // DELETE Todo
+        deleteTodo: builder.mutation<{ success: boolean, id: string }, string>({
             query: id => ({
                 url: `/todo/${id}`,
                 method: 'DELETE'
             }),
             invalidatesTags: ['Todos']
         }),
+        // Get all Categories
         getCategories: builder.query<Category[], void>({
             query: () => '/category',
-            providesTags: ['Categories']
+            providesTags: ['Categories'],
+            // Transformed to appease TS: Casts Date type to ISO string
+            transformResponse: (response:Category[]) => {
+                return response.map(category => ({
+                    ...category,
+                    createdAt: category.createdAt instanceof Date
+                        ? category.createdAt.toISOString()
+                        : category.createdAt
+                }));
+            },
         }),
+        // POST Category
         addCategory: builder.mutation<Category, Partial<Category>>({
             query: newCat => ({
                 url: '/category',

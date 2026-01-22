@@ -1,6 +1,4 @@
 import { useGetTodosQuery } from './features/api/apiSlice';
-import { useSelector } from 'react-redux';
-import type { RootState } from './app/store';
 
 import './App.css';
 import { Sidebar } from './components/Sidebar';
@@ -9,18 +7,16 @@ import { useState } from 'react';
 import { TodoList } from './components/TodoList';
 
 function App() {
-  const { data: todos, isLoading, isError } = useGetTodosQuery();
-  const sortOption = useSelector(
-    (state: RootState) => state.sort.option
-  )
 
+  // Base Data pulled from initial fetch request in apiSlice
+  const { isLoading, isError } = useGetTodosQuery();
+
+  // State variable to toggle Categories Sidebar menu
   const [ showCats, setShowCats ] = useState(false);
 
-  // TODO: Add loading and Error components
+  // Displayed if data is Loading or if an error occurs
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error connecting to server. Check port 8080.</div>
-
-  const todoList = todos ?? [];
 
   return (
     <main className='app-main fc js ac'>
@@ -32,7 +28,7 @@ function App() {
         {
           showCats && <Sidebar />
         }
-        <TodoList />
+        <TodoList showCats={showCats} />
       </div>
     </main>
   )

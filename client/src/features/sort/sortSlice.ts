@@ -12,6 +12,8 @@ const initialState: SortState = {
     option: 'isComplete+createdAt'
 };
 
+// Note: This logic was not used. It was intended to allow Todos
+// to be sorted by any property.
 export const sortSlice = createSlice({
     name: 'sort',
     initialState,

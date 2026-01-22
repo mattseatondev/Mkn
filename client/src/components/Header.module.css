@@ -36,11 +36,17 @@
 
 .navLink {
   text-decoration: none;
-  color: var(--prim);
+  color: var(--sec);
   font-weight: 600;
   transition: color 0.2s ease;
 }
 
 .navLink:hover {
   color: var(--highlight);
+}
+
+.navIcon {
+  width: 30px;
+  height: auto;
+  margin-top: -5px;
 }

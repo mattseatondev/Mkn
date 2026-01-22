@@ -8,19 +8,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../app/store';
 import { allCat, setActiveCat } from '../features/category/categorySilce';
 
+/**
+ * Sidebar Component: Acts as the primary navigation for task filtering.
+ * Manages the shared state for hovering and expanding category items to 
+ * ensure only one category is "active" or "expanded" at a time.
+ */
 export function Sidebar() {
     const dispatch = useDispatch();
     const activeCat = useSelector((state: RootState) => state.categories.activeCat);
     const { data: categories = [], isLoading, isError } = useGetCategoriesQuery();
 
     const [hoverIndex, setHoverIndex] = useState<number>(-1);
-    const [ expIndex, setExpIndex ] = useState<number>(-1);
+    const [expIndex, setExpIndex] = useState<number>(-1);
 
+    // Early return patterns for API state handling
     if (isLoading) return <aside className="sidebar">Loading categories...</aside>;
     if (isError) return <aside className="sidebar">Error loading categories</aside>;
 
     return (
         <aside className={`${classes.sidebar} fc js ac`}>
+            
+            {/* "All" Category: Specialized static item to reset filters */}
             <div
                 className={`${classes.cat} fr js ac`}
                 style={{
@@ -34,9 +42,11 @@ export function Sidebar() {
                 onMouseOver={() => setHoverIndex(0)}
                 onMouseLeave={() => setHoverIndex(-1)}
                 onClick={() => dispatch(setActiveCat(allCat))}>
-                    <ImInfinite className={classes.icon} />
-                    All
+                <ImInfinite className={classes.icon} />
+                All
             </div>
+
+            {/* Dynamic Category List: Maps retrieved API data to Category components */}
             {categories.map((cat, cx) => (
                 <Category
                     cat={cat}

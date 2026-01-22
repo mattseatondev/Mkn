@@ -10,10 +10,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { allCat, setActiveCat } from '../features/category/categorySilce';
 
 interface Props {
-    initFormData?:Partial<Todo>;
+    initFormData?: Partial<Todo>;
 }
 
-export default function TodoForm({ initFormData }:Props) {
+/**
+ * TodoForm: A multi-step interactive form for creating new tasks.
+ * Flow: 
+ * 1. Initial State: Simple "Add New Todo" call-to-action.
+ * 2. Category Selection: If no category is active, user picks one.
+ * 3. Data Entry: User provides title and body.
+ */
+export default function TodoForm({ initFormData }: Props) {
     const activeCat = useSelector((state: RootState) => state.categories.activeCat);
     const cats = useGetCategoriesQuery();
     const categories = cats.data ?? [];
@@ -21,19 +28,30 @@ export default function TodoForm({ initFormData }:Props) {
 
     const defaultFormData = { category: '', title: '', body: '' };
     const [formData, setFormData] = useState<Partial<Todo>>(initFormData ?? defaultFormData);
-    const [initForm, setInitForm] = useState(false);
+
+    /**
+     * initForm: Boolean to toggle the form from a "button" view to an "active form" view.
+     * selCat: Tracks the specific category object to drive UI colors and icon logic.
+     */
+    const [initForm, setInitForm] = useState(!!initFormData);
     const [selCat, setSelCat] = useState<Category | null>(null);
 
-    const dispatch = useDispatch();
-
+    /**
+     * Handler: Updates the form's category and UI state when a category node is clicked.
+     */
     const udFormData = (cat: Category) => {
         setSelCat(cat);
         setFormData({ ...formData, category: cat.name });
     }
 
+    /**
+     * API Handler: Submits the Todo. 
+     * Uses .unwrap() to catch potential errors in the catch block.
+     */
     const submitPost = async () => {
         try {
             await postTodo(formData).unwrap();
+            // Resets local state on success
             setFormData(defaultFormData);
             setInitForm(false);
             setSelCat(null);
@@ -42,9 +60,21 @@ export default function TodoForm({ initFormData }:Props) {
         }
     }
 
+    /**
+     * Effect: Pre-filling.
+     * If a user is already viewing a specific category, we pre-select that category for the new Todo.
+     */
     useEffect(() => {
-        if (initForm) dispatch(setActiveCat(allCat));
+        if (activeCat && activeCat.type !== 'all') {
+            setSelCat(activeCat);
+            setFormData({ ...formData, category: activeCat.name });
+        }
     }, [initForm]);
+
+    // Reset form state if the user switches categories in the Sidebar
+    useEffect(() => {
+        setInitForm(false);
+    }, [activeCat]);
 
     return (
         <form
@@ -52,6 +82,8 @@ export default function TodoForm({ initFormData }:Props) {
             style={{ color: `lightgray` }}
             onClick={() => setInitForm(true)}
             onSubmit={submitPost}>
+
+            {/* Step 1: Default 'Add' Invitation */}
             {
                 !initForm &&
                 <>
@@ -59,6 +91,8 @@ export default function TodoForm({ initFormData }:Props) {
                     <h3>Add New Todo.</h3>
                 </>
             }
+
+            {/* Step 2: Category Selector (Shown if form is open but no category is chosen) */}
             {
                 initForm && !formData.category &&
                 <div className={`${classes.cats} fr js as fw`}>
@@ -79,6 +113,8 @@ export default function TodoForm({ initFormData }:Props) {
                     }
                 </div>
             }
+
+            {/* Step 3: Text Input Fields (Shown once category is confirmed) */}
             {
                 initForm && selCat &&
                 <div className={classes.info}>
@@ -98,6 +134,8 @@ export default function TodoForm({ initFormData }:Props) {
                         <input value={formData.title} placeholder='Title' onChange={e => setFormData({ ...formData, title: e.target.value })} />
                     </header>
                     <textarea value={formData.body} onChange={e => setFormData({ ...formData, body: e.target.value })} placeholder='Body (Optional)' />
+
+                    {/* Submit UI: Only appears when a title exists: Todo body is optional */}
                     {
                         formData.title &&
                         <LuThumbsUp className={classes.thumbs} onClick={() => submitPost()} />

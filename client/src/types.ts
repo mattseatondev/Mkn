@@ -15,7 +15,7 @@ export interface Category {
     id: number;
     type: CategoryType;
     name: string;
-    createdAt: Date;
+    createdAt: Date|string;
     details?: string;
 }
 
@@ -23,8 +23,8 @@ export interface Todo {
     id: number;
     category: CategoryType;
     isComplete: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: Date|string;
+    updatedAt: Date|string;
     title: string;
     body?: string;
 }

@@ -18,6 +18,8 @@ interface Props {
     index: number;
 }
 
+// Sidebar subcomponent used to change Active Category in context,
+// As well as add new subcategories extended from base set.
 export default function Category({
     cat,
     hoverIndex,
@@ -29,16 +31,17 @@ export default function Category({
 }: Props) {
 
     const dispatch = useDispatch();
-
     const [addInput, setAddInput] = useState(false);
     const [newCat, setNewCat] = useState<string>('');
-
     const [postCat] = useAddCategoryMutation();
     const activeCat = useSelector((state: RootState) => state.categories.activeCat)
 
+    /**
+     * Logic: Submits a new subcategory to the backend via RTK Mutation.
+     * On success, it resets local UI states and closes the expansion panel.
+     */
     const submitNewCat = async () => {
         if (!newCat.trim()) return;
-
         try {
             await postCat({
                 type: cat.type,
@@ -53,12 +56,16 @@ export default function Category({
         }
     };
 
+    /**
+     * UI Handler: Updates the global Redux state for the active category
+     * and toggles the expansion of the subcategory drawer.
+     */
     const activateCat = () => {
-        console.log({ cat })
         setExpIndex(expIndex === index ? -1 : index);
         dispatch(setActiveCat(cat));
     }
 
+    // Effect: Reset the subcategory input if the user switches to a different top-level category
     useEffect(() => {
         setAddInput(false);
         setNewCat('');
@@ -85,12 +92,16 @@ export default function Category({
                 }
                 {cat.name}
             </div>
+
+            {/* Expansion Drawer: Shown only when this category is active/expanded */}
             {
                 expIndex === index &&
                 <div className={classes.exp}>
                     <div
                         className={`${classes.sub} fr js ac`} style={{ color: `var(--${cat.type})` }}
                         onClick={() => !addInput && setAddInput(true)}>
+                            
+                        {/* Conditional Rendering: Toggle between "Add" button and text input */}
                         {
                             !addInput
                                 ? <>
