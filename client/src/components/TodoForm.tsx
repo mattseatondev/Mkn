@@ -74,6 +74,8 @@ export default function TodoForm({ initFormData }: Props) {
     // Reset form state if the user switches categories in the Sidebar
     useEffect(() => {
         setInitForm(false);
+        setFormData(defaultFormData);
+        setSelCat(null);
     }, [activeCat]);
 
     return (

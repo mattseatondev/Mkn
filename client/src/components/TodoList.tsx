@@ -42,11 +42,15 @@ export function TodoList({ showCats }: Props) {
     if (todos.isError) return <div>Error with Todos</div>
 
     return (
-        <div className={`${classes.list} fc js`}>
+        <div
+            className={`${classes.list} fc js`}
+            style={{
+                width: `${showCats ? 80 : 98}%`
+            }}>
 
             {/* Dynamic Header: Adapts color and icons based on the Active Category */}
             <header
-                className={`${classes.head} fr js ac`}
+                className={`${classes.head} fr jc ac`}
                 style={{ borderBottom: `4px double var(--${activeCat.type})`, color: `var(--${activeCat.type})` }}>
                 {
                     activeCat.name === 'All'
@@ -67,10 +71,7 @@ export function TodoList({ showCats }: Props) {
 
             {/* Pending Tasks Section */}
             <div
-                className={`${classes.todos} fr js as fw`}
-                style={{
-                    width: `${showCats ? 80 : 100}%`
-                }}>
+                className={`${classes.todos} fr js as fw`}>
                 <h3 className={classes.todoHeader}>Pending Todos</h3>
                 <TodoForm />
 
