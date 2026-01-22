@@ -12,18 +12,22 @@ npm
 ### Running the App
 
 **Running the Backend**:
+``` bash
 cd server
 npm install
 npm run dev
+```
 
 The Express API will start on:
 
 http://localhost:3001
 
 **Running the Frontend**
+``` bash
 cd client
 npm install
 npm run dev
+```
 
 The React app will start on:
 
